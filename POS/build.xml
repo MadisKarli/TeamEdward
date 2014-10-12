@@ -66,6 +66,11 @@
 	<target name="clean" description="Clean up build system results">
 		<delete dir="${build.dir}"/>
 	</target>
+	
+	<property file="verion.properties"/>
+		<target name="info">
+			<echo> ${build} </echo>
+		</target>
 
 </project>
 

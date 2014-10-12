@@ -2,31 +2,56 @@ package ee.ut.math.tvt.teamedward;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class IntroUI {
+import org.apache.commons.configuration.ConfigurationException;
+
+public class IntroUI{
+
 	
-	
-	
-	public static JLabel teamName = new JLabel("TeamEdward");
-	public static JLabel teamLeader = new JLabel("Leader");
-	public static JLabel teamLeaderMail = new JLabel("Mail");
-	public static JLabel teamMember2 = new JLabel("Member2");
-	public static JLabel teamMember3 = new JLabel("Member3");
-	public static JLabel verNum = new JLabel("1.2.3");
-	
-	static JFrame mainFrame = new JFrame("TeamEdward");
-	static JPanel mainPanel = new JPanel(new GridBagLayout());
-	
-	static GridBagConstraints d = new GridBagConstraints();
-	
-	public static void tutvus(){
+	public static void tutvus() throws IOException, ConfigurationException{
+		
+		
+		PropertyValues properties = new PropertyValues();
+		String teamNameString = properties.getTeamName();
+		String teamLeaderString = properties.getTeamLeader();
+		String teamLeaderEmailString = properties.getTeamLeaderEmail();
+		String teamMembersString = properties.getTeamMembers();
+		String verNumberString = properties.getVersion();
+		
+		properties.getTeamLogo();
+		
+		
+		JLabel teamName = new JLabel("Team name: " + teamNameString);
+		JLabel teamLeader = new JLabel("Team leader: " + teamLeaderString);
+		JLabel teamLeaderMail = new JLabel("Team leader email: " + teamLeaderEmailString);
+		JLabel teamMembers = new JLabel("Members: " + teamMembersString);
+		JLabel versionNumber = new JLabel("Version: " + verNumberString);
+		
+		BufferedImage logo = ImageIO.read(new File("logo.jpeg"));
+		JLabel teamLogo = new JLabel(new ImageIcon(logo));
+		
+		deleteLogo();
+		
+		
+		
+		JFrame mainFrame = new JFrame("TeamEdward");
+		JPanel mainPanel = new JPanel(new GridBagLayout());
+		
+		GridBagConstraints d = new GridBagConstraints();
+		
+		
 		
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mainFrame.setSize(350, 260);
+		mainFrame.setSize(300, 350);
 		
 		d.gridx = 0;
 		d.gridy = 0;
@@ -46,21 +71,41 @@ public class IntroUI {
 		
 		d.gridx = 0;
 		d.gridy = 3;
-		mainPanel.add(teamMember2, d);
+		mainPanel.add(teamMembers, d);
 		
 		d.gridx = 0;
 		d.gridy = 4;
-		mainPanel.add(teamMember3, d);
+		mainPanel.add(versionNumber, d);
 		
 		d.gridx = 0;
+		d.weightx = 2.0;
+		
 		d.gridy = 5;
-		mainPanel.add(verNum, d);
+		d.anchor=GridBagConstraints.NORTH;
+		mainPanel.add(teamLogo, d);
 		
 		mainFrame.add(mainPanel);
 		
 		mainFrame.setVisible(true);
 		
 	}
+	
+	public static void deleteLogo(){
+		try{
+			 
+    		File deleteLogo = new File("logo.jpeg");
+ 
+    		deleteLogo.delete();
+ 
+    	}catch(Exception e){
+ 
+    		e.printStackTrace();
+ 
+    	}
+	}
+    
+
+    
 
 	
 }
