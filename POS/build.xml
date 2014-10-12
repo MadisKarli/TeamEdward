@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project basedir="." name="templateApp" default="build">
+<project basedir="." name="POS.makejar" default="build">
 
 	<!-- Definitions of variables used during the rest of this script -->
 
@@ -33,7 +33,7 @@
          Run them from the command line by executing "ant [targetname]"  -->
 
 	<target name="run" depends="build" description="Run the template application">
-		<java classname="ee.ut.math.tvt.salessystem.SalesSystem" classpathref="test.classpath" fork="yes" />
+		<java classname="ee.ut.math.tvt.teamedward" classpathref="IntroUI" fork="yes" />
 	</target>
 
 	<target name="build" description="Build the system">
@@ -51,7 +51,9 @@
 			includeantruntime="false">
 			<classpath refid="compile.classpath"/>
 		</javac>
-
+	</target>
+	<target name="dist" depends="build" description="Createse in the folder build/jar a spearate JAR file that has all claasses, property files and other components required for running Intro window.">
+		<mkdir dir="${build.dir.jar}"/>
 	</target>
 
 	<!-- Build internal documentation -->
