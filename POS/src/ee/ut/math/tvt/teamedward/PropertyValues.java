@@ -14,26 +14,7 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 
 
 public class PropertyValues {
-//	
-//	public String getPropValues() throws IOException {
-//		 
-//		//String result = "";
-//		Properties prop = new Properties();
-//		String propFileName = "version.properties";
-// 
-//		InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
-//		prop.load(inputStream);
-//		if (inputStream == null) {
-//			throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
-//		}
-// 
-// 
-//		// get the property value and print it out
-//		String versionNum = prop.getProperty("build.number");
-// 
-//		return versionNum;
-//	}
-//
+
 
 	public Configuration versionPropertiesValues() throws ConfigurationException{
 		
