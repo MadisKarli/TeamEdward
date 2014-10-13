@@ -3,78 +3,110 @@
 
 	<!-- Definitions of variables used during the rest of this script -->
 
-	<property file="build.properties"/>
-	<property name="build.dir" value="${basedir}/build"/>
-	<property name="build.classes.dir" value="${build.dir}/classes"/>
-	<property name="src.dir" value="${basedir}/src"/>
-	<property name="dist.dir" value="${basedir}/dist"/>
-	<property name="conf.dir" value="${basedir}/etc"/>
-	<property name="doc.dir" value="${build.dir}/doc"/>
-	<property name="test.reports.dir" value="${build.dir}/reports/"/>
+	<property file="build.properties" />
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="build.classes.dir" value="${build.dir}/classes" />
+	<property name="src.dir" value="${basedir}/src" />
+	<property name="dist.dir" value="${basedir}/dist" />
+	<property name="conf.dir" value="${basedir}/etc" />
+	<property name="doc.dir" value="${build.dir}/doc" />
+	<property name="test.reports.dir" value="${build.dir}/reports/" />
+	<property name="main-class" value="ee.ut.math.tvt.teamedward.Intro" />
+	<property name="team-name" value="teamedward" />
+
 
 	<!-- Definitions of classpath variants used for different tasks -->
 	<path id="compile.classpath">
 		<fileset dir="lib">
-			<include name="*.jar"/>
+			<include name="*.jar" />
 		</fileset>
 	</path>
 
+
 	<path id="test.classpath">
-		<pathelement location="${build.classes.dir}"/>
+		<pathelement location="${build.classes.dir}" />
 		<!-- configuration -->
-		<pathelement location="${conf.dir}"/>
+		<pathelement location="${conf.dir}" />
 		<fileset dir="lib">
-			<include name="*.jar"/>
+			<include name="*.jar" />
 		</fileset>
 	</path>
 
 	<!-- Definitions of runnable ant targets.
          Run them from the command line by executing "ant [targetname]"  -->
 
-	<target name="run" depends="build" description="Run the template application">
-		<java classname="ee.ut.math.tvt.teamedward.Intro" > 
-			<classpath path="build.classes.dir" />
-			</java>
+	<target name="run" depends="dist" description="Run the template application">
+		<java fork="yes" classname="${main-class}">
+			<classpath>
+				<pathelement path="${build.dir}/classes" />
+				<!-- Finds all librarys manually -->
+				<pathelement location="lib/log4j-1.2.17.jar" />
+				<pathelement location="lib/commons-codec-1.9.jar" />
+				<pathelement location="lib/commons-configuration-1.10.jar" />
+				<pathelement location="lib/commons-lang-2.6.jar" />
+				<pathelement location="lib/commons-logging-1.2.jar" />
+			</classpath>
+		</java>
 	</target>
 
-	<target name="build" description="Build the system">
-		<mkdir dir="${build.dir}"/>
-		<mkdir dir="${build.classes.dir}"/>
-		<javac
-            srcdir="${src.dir}"
-            destdir="${build.classes.dir}"
-            debug="true"
-            debuglevel="lines,vars,source"
-            encoding="utf-8"
-            compiler="modern"
-            target="1.7"
-            source="1.7"
-			includeantruntime="false">
-			<classpath refid="compile.classpath"/>
+
+	<target name="build" depends="clean" description="Build the system">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.classes.dir}" />
+		<javac srcdir="${src.dir}" destdir="${build.classes.dir}" debug="true" debuglevel="lines,vars,source" encoding="utf-8" compiler="modern" target="1.7" source="1.7" includeantruntime="false">
+			<classpath refid="compile.classpath" />
 		</javac>
 	</target>
-	<target name="dist" depends="build" description="Createse in the folder build/jar a spearate JAR file that has all claasses, property files and other components required for running Intro window.">
-		<mkdir dir="build/jar"/>
-				<!--siia loob jar failid-->
+
+
+	<target name="dist" depends="build" description="Createse in the folder build/jar a spearate JAR file that has all classes, property files and other components required for running Intro window.">
+		<mkdir dir="build/jar/" />
+		<jar destfile="build/jar/${team-name}.jar">
+			<fileset dir="${basedir}">
+				<include name="src/**" />
+				<include name="application.properties" />
+				<include name="version.properties" />
+				<include name="lib/**" />
+			</fileset>
+			<manifest>
+				  <attribute name="Main-Class" value="build/${main-class}" />
+			</manifest>
+		</jar>
+		<!-- increases build revision number -->
+		<propertyfile file="version.properties" comment="Version properties">
+			<entry key="build.revision.number" type="int" value="1" operation="+" />
+		</propertyfile>
 	</target>
+	<!--Does it have to work independently? -->
+	<target name="jrun" depends="dist" description="Opens intro window using the JAR file created by dist ANT target">
+		<java fork="yes" classname="${main-class}">
+			<classpath>
+				<path refid="test.classpath" />
+				<path location="${dist.dir}/${team-name}.jar" />
+			</classpath>
+		</java>
+	</target>
+
 
 	<!-- Build internal documentation -->
 	<target name="javadoc" description="Build internal documentation">
-		<mkdir dir="${doc.dir}"/>
+		<mkdir dir="${doc.dir}" />
 		<javadoc destdir="${doc.dir}" classpathref="compile.classpath">
-			<fileset dir="${src.dir}" includes="**/*.java"/>
+			<fileset dir="${src.dir}" includes="**/*.java" />
 		</javadoc>
 	</target>
 
+
 	<!-- Clean up build system results -->
 	<target name="clean" description="Clean up build system results">
-		<delete dir="${build.dir}"/>
+		<delete dir="${build.dir}" />
 	</target>
-	
-	<property file="verion.properties"/>
-		<target name="info">
-			<echo> ${build} </echo>
-		</target>
+
+
+	<property file="verion.properties" />
+	<target name="info">
+		<echo> ${build} </echo>
+	</target>
 
 </project>
 
