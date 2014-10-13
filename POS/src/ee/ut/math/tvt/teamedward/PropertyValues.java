@@ -13,6 +13,12 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 
 public class PropertyValues {
 	
+	private Configuration verConfig, appConfig;
+	
+	public PropertyValues () throws ConfigurationException{
+		this.verConfig = versionPropertiesValues();
+		this.appConfig = applicationPropertiesValues();
+	}
 	
 //create configuration from version.properties
 	public Configuration versionPropertiesValues()
@@ -45,51 +51,29 @@ public class PropertyValues {
 	}
 
 	public String getVersion() throws ConfigurationException {
-		String version;
-		Configuration verConfig = versionPropertiesValues();
-		version = verConfig.getString("build.number");
-		return version;
-
+		return verConfig.getString("build.number");
 	}
 
 	public String getTeamName() throws ConfigurationException {
-
-		Configuration appConfig = applicationPropertiesValues();
-		String teamName = appConfig.getString("teamName");
-		return teamName;
-
+		return appConfig.getString("teamName");
 	}
 
 	public String getTeamLeader() throws ConfigurationException {
-
-		Configuration appConfig = applicationPropertiesValues();
-		String teamLeader = appConfig.getString("teamLeader");
-		return teamLeader;
-
+		return appConfig.getString("teamLeader");
 	}
 
-	public String getTeamLeaderEmail() throws ConfigurationException {
-
-		Configuration appConfig = applicationPropertiesValues();
-		String teamLeaderEmail = appConfig.getString("teamLeaderEmail");
-		return teamLeaderEmail;
-
+	public String getTeamLeaderEmail() throws ConfigurationException {	
+		return appConfig.getString("teamLeaderEmail");
 	}
 
 	public String getTeamMembers() throws ConfigurationException {
-
-		Configuration appConfig = applicationPropertiesValues();
-		String teamMembers = appConfig.getString("teamLeader") + "    "
+		return appConfig.getString("teamLeader") + "    "
 				+ appConfig.getString("teamMember1") + "    "
 				+ appConfig.getString("teamMember2");
-		return teamMembers;
-
 	}
 //get BufferedImage from application.properties
 	public BufferedImage getTeamLogo() throws ConfigurationException,
 			IOException {
-
-		Configuration appConfig = applicationPropertiesValues();
 		byte[] decodedLogo = null;
 		//image is stored as Base64 String
 		String logoCode = appConfig.getString("teamLogo");
