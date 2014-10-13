@@ -12,7 +12,9 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 
 public class PropertyValues {
-
+	
+	
+//create configuration from version.properties
 	public Configuration versionPropertiesValues()
 			throws ConfigurationException {
 
@@ -27,7 +29,7 @@ public class PropertyValues {
 
 		return config;
 	}
-
+//create configuration from application.properties
 	public Configuration applicationPropertiesValues()
 			throws ConfigurationException {
 		Configuration config = null;
@@ -83,17 +85,20 @@ public class PropertyValues {
 		return teamMembers;
 
 	}
-
+//get BufferedImage from application.properties
 	public BufferedImage getTeamLogo() throws ConfigurationException,
 			IOException {
 
 		Configuration appConfig = applicationPropertiesValues();
 		byte[] decodedLogo = null;
+		//image is stored as Base64 String
 		String logoCode = appConfig.getString("teamLogo");
+		//Encode String(logoCode) into sequence of bytes. Decode Base64 data.
 		decodedLogo = Base64.decodeBase64(logoCode.getBytes());
 		// convert byte array back to BufferedImage
 		InputStream in = new ByteArrayInputStream(decodedLogo);
 		BufferedImage imageFromConvert = ImageIO.read(in);
+		in.close();
 		return imageFromConvert;
 	}
 }
