@@ -44,7 +44,6 @@ public class IntroUI {
 
 		d.gridx = 0;
 		d.gridy = 0;
-		d.weightx = 1.0;
 		d.weighty = 1.0;
 		d.anchor = GridBagConstraints.NORTHWEST;
 
