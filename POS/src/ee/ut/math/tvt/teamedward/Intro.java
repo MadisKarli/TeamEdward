@@ -13,6 +13,7 @@ public class Intro {
 	public static void main(String[] args) throws IOException,
 			ConfigurationException {
 		BasicConfigurator.configure();
+		logger.info("Initializing intro window");
 		IntroUI.tutvus();
 		logger.info("The intro window has been initialized.");
 	}
