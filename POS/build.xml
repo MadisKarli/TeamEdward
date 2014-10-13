@@ -82,9 +82,9 @@
 		</propertyfile>
 	</target>
 
-
+	
 	<!--doesnotwork.java -->
-	<target name="jrun" depends="dist" description="Opens intro window using the JAR file created by dist ANT target">
+	<target name="jrun" depends="dist" description="Run teamedward.jar. Doesnotwork">
 		<java fork="yes" jar="build/jar/${team-name}.jar" />
 	</target>
 
@@ -98,13 +98,13 @@
 	</target>
 
 
-	<!-- Clean up build system results -->
+	<!-- Clean up! -->
 	<target name="clean" description="Clean up build system results">
 		<delete dir="${build.dir}" />
 	</target>
 
 
-	<property file="verion.properties" />
+	<property file="version.properties" />
 	<target name="info">
 		<echo> ${build} </echo>
 	</target>
