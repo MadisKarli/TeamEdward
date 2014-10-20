@@ -14,6 +14,8 @@ import org.apache.commons.configuration.ConfigurationException;
 
 public class IntroUI {
 
+	static JFrame mainFrame = new JFrame("TeamEdward");
+
 	public static void tutvus() throws IOException, ConfigurationException {
 
 		PropertyValues properties = new PropertyValues();
@@ -34,7 +36,6 @@ public class IntroUI {
 
 		JLabel teamLogo = new JLabel(new ImageIcon(imageLogo));
 
-		JFrame mainFrame = new JFrame("TeamEdward");
 		JPanel mainPanel = new JPanel(new GridBagLayout());
 
 		GridBagConstraints d = new GridBagConstraints();
@@ -74,8 +75,13 @@ public class IntroUI {
 
 		mainFrame.add(mainPanel);
 
-		mainFrame.setVisible(true);
-
 	}
 
+	public static void setVisible(boolean b) {
+		mainFrame.setVisible(b);
+	}
+
+	public static void setAlwaysOnTop(boolean b) {
+		mainFrame.setAlwaysOnTop(b);
+	}
 }
