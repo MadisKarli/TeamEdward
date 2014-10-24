@@ -101,32 +101,35 @@
 		<element name="args" optional="true" />
 		<sequential>
 			<echo message="git @{command}" />
-				<exec executable="git" dir="@{dir}">
+			<exec executable="git" dir="@{dir}">
 				<arg value="@{command}" />
-				<args/>
+				<args />
 			</exec>
 		</sequential>
-	</macrodef>	
-	
+	</macrodef>
+
 
 	<!-- github commit -->
-	<target name="git_commit" description="Commits changes to GitHub">
+	<target name="git_commit" description="Commit+push changes to GitHub">
+		<input message="Commit message" addproperty="message" />
+		<input message="Github username" addproperty="username" />
+		<input message="Github password" addproperty="password" />
 
 		<git command="add">
 			<args>
 				<arg value="-A" />
 			</args>
 		</git>
-		
+
 		<git command="commit">
 			<args>
-				<arg value="-m commit from build file" />
+				<arg value="-m ${message}" />
 			</args>
 		</git>
 
 		<git command="push">
 			<args>
-				<arg value="https://MadisKarli:Ferdi21282@github.com/MadisKarli/TeamEdward.git" />
+				<arg value="https://${username}:${password}@github.com/MadisKarli/TeamEdward.git" />
 			</args>
 		</git>
 	</target>
