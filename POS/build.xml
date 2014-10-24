@@ -60,32 +60,30 @@
 
 
 	<target name="dist" depends="build" description="Createse in the folder build/jar a spearate JAR file that has all classes, property files and other components required for running Intro window.">
-	    <mkdir dir="build/jar/" />
-	    <jar 
-	    	destfile="build/jar/${team-name}.jar"
-	    	basedir="${build.classes.dir}">
-	      <fileset dir="${build.classes.dir}" />
-	      <fileset dir="${basedir}">
-	        <include name="application.properties" />
-	        <include name="version.properties" />
-	      </fileset>
-	    	 <archives>
-	    	       <zips>
-	    	         <fileset dir="lib/" includes="*.jar"/>
-	    	       </zips>
-	    	      </archives>
-	      <manifest>
-	        <attribute name="Main-Class" value="${main-class}" />
-	      </manifest>
-	    </jar>
-	    <propertyfile file="version.properties" comment="Version properties">
-	      <entry key="build.revision.number" default="0" type="int" operation="+" />
-	    </propertyfile>
-	  </target>
+		<mkdir dir="build/jar/" />
+		<jar destfile="build/jar/${team-name}.jar" basedir="${build.classes.dir}">
+			<fileset dir="${build.classes.dir}" />
+			<fileset dir="${basedir}">
+				<include name="application.properties" />
+				<include name="version.properties" />
+			</fileset>
+			<archives>
+				<zips>
+					<fileset dir="lib/" includes="*.jar" />
+				</zips>
+			</archives>
+			<manifest>
+				<attribute name="Main-Class" value="${main-class}" />
+			</manifest>
+		</jar>
+		<propertyfile file="version.properties" comment="Version properties">
+			<entry key="build.revision.number" default="0" type="int" operation="+" />
+		</propertyfile>
+	</target>
 
 
-	<!--doesnotwork.java -->
-	<target name="jrun" depends="dist" description="Run teamedward.jar. Doesnotwork">
+	<!--Target to run .jar file -->
+	<target name="jrun" depends="dist" description="Run teamedward.jar.">
 		<java fork="yes" jar="build/jar/${team-name}.jar" />
 	</target>
 
@@ -105,6 +103,8 @@
 	</target>
 
 
+
+
 	<property file="version.properties" />
 	<target name="info">
 		<echo> ${build} </echo>
@@ -112,3 +112,4 @@
 
 </project>
 
+ 
