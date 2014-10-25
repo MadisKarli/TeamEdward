@@ -1,7 +1,5 @@
 package ee.ut.math.tvt.salessystem.ui.tabs;
 
-import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
@@ -16,9 +14,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
 
-public class StockTab {
+import ee.ut.math.tvt.salessystem.ui.dialogs.AddToStockDialog;
+import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 
-	private JButton addItem;
+public class StockTab {
 
 	private SalesSystemModel model;
 
@@ -61,9 +60,7 @@ public class StockTab {
 		gc.anchor = GridBagConstraints.NORTHWEST;
 		gc.weightx = 0;
 
-		// addItem = new JButton("Add"); //TODO Remove once the proper method
-		// has been created
-		addItem = createAddButton();
+		JButton addItem = createAddButton();
 		gc.gridwidth = GridBagConstraints.RELATIVE;
 		gc.weightx = 1.0;
 		panel.add(addItem, gc);
@@ -101,13 +98,10 @@ public class StockTab {
 		b.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				addButtonClicked();
+				new AddToStockDialog(model);
 			}
 		});
 		return b;
-	}
-
-	protected void addButtonClicked() {
 	}
 
 }
