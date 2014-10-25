@@ -9,7 +9,5 @@
 	<classpathentry kind="lib" path="lib/log4j-1.2.17.jar"/>
 	<classpathentry kind="lib" path="lib/jgoodies-looks-2.6.0.jar"/>
 	<classpathentry kind="lib" path="lib/jgoodies-common-1.8.0.jar"/>
-	<classpathentry kind="lib" path="lib/swt-debug.jar"/>
-	<classpathentry kind="lib" path="lib/swt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

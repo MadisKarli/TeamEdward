@@ -82,7 +82,7 @@
 
 
 	<!--doesnotwork.java -->
-	<target name="jrun" depends="git_commit" description="Run teamedward.jar. Doesnotwork">
+	<target name="jrun" depends="dist" description="Run teamedward.jar. Doesnotwork">
 		<java fork="yes" jar="build/jar/${team-name}.jar" />
 	</target>
 
@@ -93,45 +93,6 @@
 		<javadoc destdir="${doc.dir}" classpathref="compile.classpath">
 			<fileset dir="${src.dir}" includes="**/*.java" />
 		</javadoc>
-	</target>
-	<!-- git macro -->
-	<macrodef name="git">
-		<attribute name="command" />
-		<attribute name="dir" default="" />
-		<element name="args" optional="true" />
-		<sequential>
-			<echo message="git @{command}" />
-			<exec executable="git" dir="@{dir}">
-				<arg value="@{command}" />
-				<args />
-			</exec>
-		</sequential>
-	</macrodef>
-
-
-	<!-- github commit -->
-	<target name="git_commit" description="Commit+push changes to GitHub">
-		<input message="Commit message" addproperty="message" />
-		<input message="Github username" addproperty="username" />
-		<input message="Github password" addproperty="password" />
-
-		<git command="add">
-			<args>
-				<arg value="-A" />
-			</args>
-		</git>
-
-		<git command="commit">
-			<args>
-				<arg value="-m ${message}" />
-			</args>
-		</git>
-
-		<git command="push">
-			<args>
-				<arg value="https://${username}:${password}@github.com/MadisKarli/TeamEdward.git" />
-			</args>
-		</git>
 	</target>
 
 
