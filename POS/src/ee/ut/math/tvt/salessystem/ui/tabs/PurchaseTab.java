@@ -176,6 +176,7 @@ public class PurchaseTab {
 	private void startNewSale() {
 		purchasePane.reset();
 
+		purchasePane.fillDialogFieldsByName();
 		purchasePane.setEnabled(true);
 		submitPurchase.setEnabled(true);
 		cancelPurchase.setEnabled(true);
