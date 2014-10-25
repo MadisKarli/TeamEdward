@@ -14,7 +14,7 @@
 	<property name="test.reports.dir" value="${build.dir}/reports" />
 	<property name="main-class" value="ee.ut.math.tvt.teamedward.Intro" />
 	<property name="team-name" value="teamedward" />
-	<property name="libraries" value="lib/log4j-1.2.17.jar lib/commons-codec-1.9.jar lib/commons-configuration-1.10.jar lib/commons-lang-2.6.jar lib/commons-logging-1.2.jar" />
+	<property name="libraries" value="lib/log4j-1.2.17.jar lib/commons-codec-1.9.jar lib/commons-configuration-1.10.jar lib/commons-lang-2.6.jar lib/commons-logging-1.2.jar lib/jgoodies-common-1.8.0.jar lib/jgoodies-looks-2.6.0.jar"/>
 
 
 	<!-- Definitions of classpath variants used for different tasks -->
@@ -34,7 +34,7 @@
 	<!-- Definitions of runnable ant targets.
          Run them from the command line by executing "ant [targetname]"  -->
 
-	<target name="run" depends="dist" description="Run application in eclipse">
+	<target name="run" description="Run application in eclipse">
 		<java fork="yes" classname="${main-class}">
 			<classpath>
 				<pathelement path="${build.dir}/classes" />
@@ -44,6 +44,8 @@
 				<pathelement location="lib/commons-configuration-1.10.jar" />
 				<pathelement location="lib/commons-lang-2.6.jar" />
 				<pathelement location="lib/commons-logging-1.2.jar" />
+				<pathelement location="lib/jgoodies-common-1.8.0.jar" />
+				<pathelement location="lib/jgoodies-looks-2.6.0.jar" />
 
 			</classpath>
 		</java>
@@ -60,6 +62,7 @@
 
 
 	<target name="dist" depends="build" description="Createse in the folder build/jar a spearate JAR file that has all classes, property files and other components required for running Intro window.">
+
 	    <mkdir dir="build/jar/" />
 	    <jar 
 	    	destfile="build/jar/${team-name}.jar"
@@ -87,8 +90,11 @@
 	  </target>
 
 
-	<!--doesnotwork.java -->
-	<target name="jrun" depends="dist" description="Run teamedward.jar. Doesnotwork">
+
+
+
+	<!--Target to run .jar file -->
+	<target name="jrun" depends="dist" description="Run teamedward.jar.">
 		<java fork="yes" jar="build/jar/${team-name}.jar" />
 	</target>
 
@@ -99,6 +105,71 @@
 		<javadoc destdir="${doc.dir}" classpathref="compile.classpath">
 			<fileset dir="${src.dir}" includes="**/*.java" />
 		</javadoc>
+	</target>
+
+	<!-- git macro -->
+	<macrodef name="git">
+		<attribute name="command" />
+		<attribute name="dir" default="" />
+		<element name="args" optional="true" />
+		<sequential>
+			<echo message="git @{command}" />
+			<exec executable="git" dir="@{dir}">
+				<arg value="@{command}" />
+				<args />
+			</exec>
+		</sequential>
+	</macrodef>
+
+
+	<!-- commit to git -->
+	<target name="git_commit" description="Commit+push changes to GitHub">
+		<input message="Insert comment" addproperty="message" />
+		<input message="Github username" addproperty="username" />
+		<input message="Github password" addproperty="password" />
+
+		<git command="add">
+			<args>
+				<arg value="-A" />
+			</args>
+		</git>
+
+		<git command="commit">
+			<args>
+				<arg value="-m ${message}" />
+			</args>
+		</git>
+
+		<git command="push">
+			<args>
+				<arg value="https://${username}:${password}@github.com/MadisKarli/TeamEdward.git" />
+			</args>
+		</git>
+	</target>
+	
+	
+	<!--push with tag -->
+	<target name="git_tag" description="Push with tag">
+		<input message="Insert homework number" addproperty="homework_number" />
+		<input message="Commit comment" addproperty="tag_comment" />
+		<input message="Github username" addproperty="username" />
+		<input message="Github password" addproperty="password" />
+
+		<git command="tag">
+			<args>
+				<arg value="-a"/>
+				<arg value="Homework_${homework_number}"/>
+				<arg value="-m ${tag_comment}"/>
+			</args>
+		</git>
+
+		<git command="push">
+			<args>
+				<arg value="--tags" />
+				<arg value="https://${username}:${password}@github.com/MadisKarli/TeamEdward.git" />
+			</args>
+		</git>
+
 	</target>
 
 
