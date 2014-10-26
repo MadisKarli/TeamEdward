@@ -1,5 +1,8 @@
 package ee.ut.math.tvt.salessystem.ui.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
@@ -74,12 +77,14 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 				+ item.getQuantity());
 		fireTableDataChanged();
 	}
-	//getter for sum
-	public float getPurchaseSum(){
+
+	// getter for sum
+	public float getPurchaseSum() {
 		float sum = 0;
-		for(SoldItem soldItem: getTableRows()){
-			sum += soldItem.getQuantity()*soldItem.getPrice();
+		for (SoldItem soldItem : getTableRows()) {
+			sum += soldItem.getSum();
 		}
 		return sum;
 	}
+
 }

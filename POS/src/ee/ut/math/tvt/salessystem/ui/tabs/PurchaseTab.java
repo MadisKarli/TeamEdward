@@ -1,11 +1,5 @@
 package ee.ut.math.tvt.salessystem.ui.tabs;
 
-import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
-import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
-import ee.ut.math.tvt.salessystem.ui.dialogs.PaymentDialog;
-import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
-import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
@@ -18,6 +12,12 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
+
+import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
+import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
+import ee.ut.math.tvt.salessystem.ui.dialogs.PaymentDialog;
+import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
+import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
 
 /**
  * Encapsulates everything that has to do with the purchase tab (the tab
@@ -158,15 +158,21 @@ public class PurchaseTab {
 
 	/** Event handler for the <code>submit purchase</code> event. */
 	protected void submitPurchaseButtonClicked() {
-		new PaymentDialog(model);
-		log.info("Sale complete");
+
 		try {
+			new PaymentDialog(model);
 			log.debug("Contents of the current basket:\n"
 					+ model.getCurrentPurchaseTableModel());
 			domainController.submitCurrentPurchase(model
 					.getCurrentPurchaseTableModel().getTableRows());
-			endSale();
+
+			model.getHistoryTableModel().addPurchase(
+					model.getCurrentPurchaseTableModel());
+
 			model.getCurrentPurchaseTableModel().clear();
+			endSale();
+
+			log.info("Sale complete");
 		} catch (VerificationFailedException e1) {
 			log.error(e1.getMessage());
 		}
@@ -197,8 +203,6 @@ public class PurchaseTab {
 		newPurchase.setEnabled(true);
 		purchasePane.setEnabled(false);
 	}
-	
-
 
 	/*
 	 * === Next methods just create the layout constraints objects that control
