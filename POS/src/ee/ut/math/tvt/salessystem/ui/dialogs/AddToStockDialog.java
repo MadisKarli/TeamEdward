@@ -109,8 +109,8 @@ public class AddToStockDialog {
 
 			model.getWarehouseTableModel().addItem(newItem);
 			dialog.dispose();
-		} catch (Exception e) {
-			new ExceptionDialog("Invalid input!", dialog);
+		} catch (NumberFormatException e) {
+			new ExceptionDialog("Invalid input!", "Try Again");
 		}
 
 	}

@@ -21,12 +21,13 @@ import com.jgoodies.looks.windows.WindowsLookAndFeel;
 
 public class ExceptionDialog {
 
-	String message;
+	String message, buttonName;
 	JDialog dialog, owner;
 
-	public ExceptionDialog(String message, JDialog owner) {
+	public ExceptionDialog(String message, String buttonName) {
 		super();
 		this.message = message;
+		this.buttonName = buttonName;
 
 		try {
 			UIManager.setLookAndFeel(new WindowsLookAndFeel());
@@ -62,7 +63,7 @@ public class ExceptionDialog {
 	}
 
 	private JButton createTryAgainButton() {
-		JButton b = new JButton("Try Again");
+		JButton b = new JButton(buttonName);
 		b.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

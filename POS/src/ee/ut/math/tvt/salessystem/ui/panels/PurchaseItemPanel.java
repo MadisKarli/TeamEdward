@@ -20,6 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
@@ -39,6 +41,7 @@ public class PurchaseItemPanel extends JPanel {
 	private JTextField quantityField;
 	private JComboBox<String> nameBox;
 	private JTextField priceField;
+	private JTextField sumField;
 
 	private JButton addItemButton;
 
@@ -85,7 +88,7 @@ public class PurchaseItemPanel extends JPanel {
 
 		// Create the panel
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(5, 2));
+		panel.setLayout(new GridLayout(6, 2));
 		panel.setBorder(BorderFactory.createTitledBorder("Product"));
 
 		// Initialize the textfields and combobox
@@ -94,9 +97,10 @@ public class PurchaseItemPanel extends JPanel {
 		nameBox = new JComboBox<String>(model.getWarehouseTableModel()
 				.getStockItemNames());
 		priceField = new JTextField();
+		sumField = new JTextField();
 
 		// A listener for when an item has been added to stock or an item has
-		// been sold out
+		// been sold out to change the possible options for products.
 		model.getWarehouseTableModel().addTableModelListener(
 				new TableModelListener() {
 					@Override
@@ -129,8 +133,38 @@ public class PurchaseItemPanel extends JPanel {
 			}
 		});
 
-		// nameField.setEditable(false);
+		quantityField.getDocument().addDocumentListener(new DocumentListener() {
+
+			@Override
+			public void changedUpdate(DocumentEvent arg0) {
+				sumField.setText(String.valueOf(Integer.parseInt(quantityField
+						.getText()) * Double.parseDouble(priceField.getText())));
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
+				try {
+					sumField.setText(String.valueOf(Integer
+							.parseInt(quantityField.getText())
+							* Double.parseDouble(priceField.getText())));
+				} catch (NumberFormatException e) {
+				}
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent arg0) {
+				try {
+					sumField.setText(String.valueOf(Integer
+							.parseInt(quantityField.getText())
+							* Double.parseDouble(priceField.getText())));
+				} catch (NumberFormatException e) {
+				}
+			}
+
+		});
+
 		priceField.setEditable(false);
+		sumField.setEditable(false);
 
 		// == Add components to the panel
 
@@ -149,6 +183,10 @@ public class PurchaseItemPanel extends JPanel {
 		// - price
 		panel.add(new JLabel("Price:"));
 		panel.add(priceField);
+
+		// - sum
+		panel.add(new JLabel("Sum:"));
+		panel.add(sumField);
 
 		// Create and add the button
 		addItemButton = new JButton("Add to cart");
@@ -191,13 +229,18 @@ public class PurchaseItemPanel extends JPanel {
 	}
 
 	public void fillDialogFieldsByName() {
-		String name = nameBox.getSelectedItem().toString();
-		for (StockItem item : model.getWarehouseTableModel().getTableRows()) {
-			if (name.equals(item.getName())) {
-				barCodeField.setText(item.getId().toString());
-				priceField.setText(String.valueOf(item.getPrice()));
-				break;
+		try {
+			String name = nameBox.getSelectedItem().toString();
+			for (StockItem item : model.getWarehouseTableModel().getTableRows()) {
+				if (name.equals(item.getName())) {
+					barCodeField.setText(item.getId().toString());
+					priceField.setText(String.valueOf(item.getPrice()));
+					sumField.setText(String.valueOf(item.getPrice()
+							* Integer.parseInt(quantityField.getText())));
+					break;
+				}
 			}
+		} catch (NullPointerException e) {
 		}
 	}
 
@@ -214,8 +257,10 @@ public class PurchaseItemPanel extends JPanel {
 			} catch (NumberFormatException ex) {
 				quantity = 1;
 			}
-			model.getCurrentPurchaseTableModel().addItem(
-					new SoldItem(stockItem, quantity));
+			SoldItem soldItem = new SoldItem(stockItem, Math.min(quantity,
+					stockItem.getQuantity()));
+			model.getCurrentPurchaseTableModel().addItem(soldItem);
+			model.updateWarehouseTableModel(soldItem);
 			reset();
 		}
 	}
@@ -235,10 +280,9 @@ public class PurchaseItemPanel extends JPanel {
 	 * Reset dialog fields.
 	 */
 	public void reset() {
-		barCodeField.setText("");
 		quantityField.setText("1");
 		nameBox.setSelectedIndex(0);
-		priceField.setText("");
+		fillDialogFieldsByName();
 	}
 
 	/*

@@ -53,6 +53,11 @@ public class StockTableModel extends SalesSystemTableModel<StockItem> {
 		fireTableDataChanged();
 	}
 
+	public void removeItem(StockItem stockItem) {
+		getTableRows().remove(stockItem);
+		fireTableDataChanged();
+	}
+
 	@Override
 	public String toString() {
 		final StringBuffer buffer = new StringBuffer();
@@ -73,7 +78,6 @@ public class StockTableModel extends SalesSystemTableModel<StockItem> {
 	}
 
 	public String[] getStockItemNames() {
-		// Vector<String> names = new Vector<String>();
 
 		int numberOfItems = getRowCount();
 		String[] names = new String[numberOfItems];

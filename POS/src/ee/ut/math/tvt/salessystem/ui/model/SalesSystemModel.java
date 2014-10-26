@@ -3,43 +3,61 @@ package ee.ut.math.tvt.salessystem.ui.model;
 import org.apache.log4j.Logger;
 
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
+import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
+import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.ui.dialogs.ExceptionDialog;
 
 /**
  * Main model. Holds all the other models.
  */
 public class SalesSystemModel {
-    
-    private static final Logger log = Logger.getLogger(SalesSystemModel.class);
 
-    // Warehouse model
-    private StockTableModel warehouseTableModel;
-    
-    // Current shopping cart model
-    private PurchaseInfoTableModel currentPurchaseTableModel;
+	private static final Logger log = Logger.getLogger(SalesSystemModel.class);
 
-    private final SalesDomainController domainController;
+	// Warehouse model
+	private StockTableModel warehouseTableModel;
 
-    /**
-     * Construct application model.
-     * @param domainController Sales domain controller.
-     */
-    public SalesSystemModel(SalesDomainController domainController) {
-        this.domainController = domainController;
-        
-        warehouseTableModel = new StockTableModel();
-        currentPurchaseTableModel = new PurchaseInfoTableModel();
+	// Current shopping cart model
+	private PurchaseInfoTableModel currentPurchaseTableModel;
 
-        // populate stock model with data from the warehouse
-        warehouseTableModel.populateWithData(domainController.loadWarehouseState());
+	private final SalesDomainController domainController;
 
-    }
+	/**
+	 * Construct application model.
+	 * 
+	 * @param domainController
+	 *            Sales domain controller.
+	 */
+	public SalesSystemModel(SalesDomainController domainController) {
+		this.domainController = domainController;
 
-    public StockTableModel getWarehouseTableModel() {
-        return warehouseTableModel;
-    }
+		warehouseTableModel = new StockTableModel();
+		currentPurchaseTableModel = new PurchaseInfoTableModel();
 
-    public PurchaseInfoTableModel getCurrentPurchaseTableModel() {
-        return currentPurchaseTableModel;
-    }
-    
+		// populate stock model with data from the warehouse
+		warehouseTableModel.populateWithData(domainController
+				.loadWarehouseState());
+
+	}
+
+	public StockTableModel getWarehouseTableModel() {
+		return warehouseTableModel;
+	}
+
+	public PurchaseInfoTableModel getCurrentPurchaseTableModel() {
+		return currentPurchaseTableModel;
+	}
+
+	public void updateWarehouseTableModel(SoldItem soldItem) {
+		StockItem stockItem = warehouseTableModel.getItemById(soldItem.getId());
+		int stockItemQuantity = stockItem.getQuantity();
+		int soldItemQuantity = soldItem.getQuantity();
+		if (stockItemQuantity > soldItemQuantity)
+			stockItem.setQuantity(stockItemQuantity - soldItemQuantity);
+		else {
+			warehouseTableModel.removeItem(stockItem);
+			new ExceptionDialog("We're out of " + stockItem.getName(), "Ok");
+		}
+	}
+
 }
