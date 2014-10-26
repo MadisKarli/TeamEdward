@@ -149,6 +149,7 @@ public class PurchaseTab {
 		log.info("Sale cancelled");
 		try {
 			domainController.cancelCurrentPurchase();
+			model.cancelCurrentPurchase();
 			endSale();
 			model.getCurrentPurchaseTableModel().clear();
 		} catch (VerificationFailedException e1) {
@@ -160,19 +161,18 @@ public class PurchaseTab {
 	protected void submitPurchaseButtonClicked() {
 
 		try {
+			double purchaseSum = model.getCurrentPurchaseTableModel()
+					.getPurchaseSum();
 			new PaymentDialog(model);
 			log.debug("Contents of the current basket:\n"
 					+ model.getCurrentPurchaseTableModel());
 			domainController.submitCurrentPurchase(model
 					.getCurrentPurchaseTableModel().getTableRows());
+			if (model.getCurrentPurchaseTableModel().getPurchaseSum() != purchaseSum) {
+				endSale();
 
-			model.getHistoryTableModel().addPurchase(
-					model.getCurrentPurchaseTableModel());
-
-			model.getCurrentPurchaseTableModel().clear();
-			endSale();
-
-			log.info("Sale complete");
+				log.info("Sale complete");
+			}
 		} catch (VerificationFailedException e1) {
 			log.error(e1.getMessage());
 		}

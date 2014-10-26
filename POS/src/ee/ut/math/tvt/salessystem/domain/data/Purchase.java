@@ -3,7 +3,7 @@ package ee.ut.math.tvt.salessystem.domain.data;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
+import java.util.List;
 
 import ee.ut.math.tvt.salessystem.ui.model.PurchaseInfoTableModel;
 
@@ -47,11 +47,6 @@ public class Purchase implements Cloneable, DisplayableItem {
 	@Override
 	public Long getId() {
 		return null;
-	}
-
-	@Override
-	public Purchase clone() {
-		return new Purchase(purchase);
 	}
 
 }

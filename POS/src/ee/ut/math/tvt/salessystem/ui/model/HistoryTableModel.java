@@ -8,7 +8,8 @@ import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 public class HistoryTableModel extends SalesSystemTableModel<Purchase> {
 
 	public HistoryTableModel() {
-		super(new String[] { "Date", "Time", "Sum" });
+		super(new String[] { "Date of the order", "Time of the order",
+				"Total order price" });
 	}
 
 	private static final long serialVersionUID = 1L;

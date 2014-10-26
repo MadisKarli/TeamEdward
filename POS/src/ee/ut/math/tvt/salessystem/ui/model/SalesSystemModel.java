@@ -1,5 +1,7 @@
 package ee.ut.math.tvt.salessystem.ui.model;
 
+import java.util.NoSuchElementException;
+
 import org.apache.log4j.Logger;
 
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
@@ -65,6 +67,20 @@ public class SalesSystemModel {
 		else {
 			warehouseTableModel.removeItem(stockItem);
 			new ExceptionDialog("We're out of " + stockItem.getName(), "Ok");
+		}
+	}
+
+	public void cancelCurrentPurchase() {
+		for (SoldItem item : getCurrentPurchaseTableModel().getTableRows()) {
+			try {
+				StockItem stockItem = warehouseTableModel.getItemById(item
+						.getId());
+				stockItem.setQuantity(stockItem.getQuantity()
+						+ item.getQuantity());
+			} catch (NoSuchElementException e) {
+				warehouseTableModel.addItem(new StockItem(item.getId(), item
+						.getName(), "", item.getPrice(), item.getQuantity()));
+			}
 		}
 	}
 

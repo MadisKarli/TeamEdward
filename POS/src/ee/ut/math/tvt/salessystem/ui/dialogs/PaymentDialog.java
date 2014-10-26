@@ -26,6 +26,7 @@ import javax.swing.event.DocumentListener;
 
 import com.jgoodies.looks.windows.WindowsLookAndFeel;
 
+import ee.ut.math.tvt.salessystem.ui.model.PurchaseInfoTableModel;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 
 public class PaymentDialog {
@@ -140,9 +141,15 @@ public class PaymentDialog {
 	protected void doneButtonClicked() {
 		try {
 			if (Double.parseDouble(changeAmount.getText()) >= 0) {
-				// model.getHistoryTableModel().addPurchase(
-				// model.getCurrentPurchaseTableModel());
-				// System.out.println(model.getCurrentPurchaseTableModel());
+
+				PurchaseInfoTableModel purchaseInfoTableModel = new PurchaseInfoTableModel();
+				purchaseInfoTableModel.populateWithData(model
+						.getCurrentPurchaseTableModel().getTableRows());
+
+				model.getHistoryTableModel()
+						.addPurchase(purchaseInfoTableModel);
+
+				model.getCurrentPurchaseTableModel().clear();
 				dialog.dispose();
 			} else
 				new ExceptionDialog("Moar moneys, plz!", "Ok");
