@@ -15,6 +15,7 @@ import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
 
 import ee.ut.math.tvt.salessystem.ui.dialogs.AddToStockDialog;
+import ee.ut.math.tvt.salessystem.ui.dialogs.PaymentDialog;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 
 public class StockTab {
