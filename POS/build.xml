@@ -34,7 +34,7 @@
 	<!-- Definitions of runnable ant targets.
          Run them from the command line by executing "ant [targetname]"  -->
 
-	<target name="run" description="Run application in eclipse">
+	<target name="run" depends="build" description="Run application in eclipse">
 		<java fork="yes" classname="${main-class}">
 			<classpath>
 				<pathelement path="${build.dir}/classes" />
