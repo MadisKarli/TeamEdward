@@ -37,7 +37,7 @@
 	<target name="run" depends="build" description="Run application in eclipse">
 		<java fork="yes" classname="${main-class}">
 			<classpath>
-				<pathelement path="${build.dir}/classes" />
+				<pathelement path="${build.dir}/classes"/>
 				<!-- All librarys manually -->
 				<pathelement location="lib/log4j-1.2.17.jar" />
 				<pathelement location="lib/commons-codec-1.9.jar" />
@@ -46,7 +46,6 @@
 				<pathelement location="lib/commons-logging-1.2.jar" />
 				<pathelement location="lib/jgoodies-common-1.8.0.jar" />
 				<pathelement location="lib/jgoodies-looks-2.6.0.jar" />
-
 			</classpath>
 		</java>
 	</target>

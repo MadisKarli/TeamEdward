@@ -74,4 +74,12 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 				+ item.getQuantity());
 		fireTableDataChanged();
 	}
+	//getter for sum
+	public float getPurchaseSum(){
+		float sum = 0;
+		for(SoldItem soldItem: getTableRows()){
+			sum += soldItem.getQuantity()*soldItem.getPrice();
+		}
+		return sum;
+	}
 }

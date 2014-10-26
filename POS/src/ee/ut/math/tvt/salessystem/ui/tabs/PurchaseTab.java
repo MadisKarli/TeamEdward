@@ -2,17 +2,21 @@ package ee.ut.math.tvt.salessystem.ui.tabs;
 
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
+import ee.ut.math.tvt.salessystem.ui.dialogs.PaymentDialog;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -154,6 +158,7 @@ public class PurchaseTab {
 
 	/** Event handler for the <code>submit purchase</code> event. */
 	protected void submitPurchaseButtonClicked() {
+		new PaymentDialog(model);
 		log.info("Sale complete");
 		try {
 			log.debug("Contents of the current basket:\n"
@@ -192,6 +197,8 @@ public class PurchaseTab {
 		newPurchase.setEnabled(true);
 		purchasePane.setEnabled(false);
 	}
+	
+
 
 	/*
 	 * === Next methods just create the layout constraints objects that control
