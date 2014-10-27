@@ -65,7 +65,7 @@ public class SalesSystemModel {
 		if (stockItemQuantity > soldItemQuantity)
 			stockItem.setQuantity(stockItemQuantity - soldItemQuantity);
 		else {
-			warehouseTableModel.removeItem(stockItem);
+			stockItem.setQuantity(0);
 			new ExceptionDialog("We're out of " + stockItem.getName(), "Ok");
 		}
 	}

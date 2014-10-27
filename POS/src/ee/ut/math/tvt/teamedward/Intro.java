@@ -20,13 +20,14 @@ public class Intro {
 			IOException {
 
 		final SalesDomainController domainController = new SalesDomainControllerImpl();
+		BasicConfigurator.configure();
 		if (args.length == 1 && args[0].equals(MODE)) {
 			log.debug("Mode: " + MODE);
 			
 			ConsoleUI cui = new ConsoleUI(domainController);
 			cui.run();
 		} else {
-			BasicConfigurator.configure();
+			
 
 			IntroUI.tutvus();
 			IntroUI.setVisible(true);

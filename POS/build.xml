@@ -35,7 +35,9 @@
          Run them from the command line by executing "ant [targetname]"  -->
 
 	<target name="run" depends="build" description="Run application in eclipse">
-		<java fork="yes" classname="${main-class}">
+		<java fork="yes" classname="${main-class}" >
+			<jvmarg value="-Xdebug" />
+			<jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=1044" />
 			<classpath>
 				<pathelement path="${build.dir}/classes"/>
 				<!-- All librarys manually -->
@@ -47,6 +49,8 @@
 				<pathelement location="lib/jgoodies-common-1.8.0.jar" />
 				<pathelement location="lib/jgoodies-looks-2.6.0.jar" />
 			</classpath>
+			
+			
 		</java>
 	</target>
 
@@ -54,7 +58,7 @@
 	<target name="build" depends="clean" description="Build the system">
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${build.classes.dir}" />
-		<javac srcdir="${src.dir}" destdir="${build.classes.dir}" debug="true" debuglevel="lines,vars,source" encoding="utf-8" compiler="modern" target="1.7" source="1.7" includeantruntime="false">
+		<javac srcdir="${src.dir}" destdir="${build.classes.dir}" debug="true" debuglevel="lines,vars,source" encoding="utf-8" compiler="modern" target="1.8" source="1.8" includeantruntime="false">
 			<classpath refid="compile.classpath" />
 		</javac>
 	</target>
