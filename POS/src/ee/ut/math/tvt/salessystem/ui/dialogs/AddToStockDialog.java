@@ -104,6 +104,9 @@ public class AddToStockDialog {
 			double price = Double.parseDouble(priceField.getText());
 			int quantity = Integer.parseInt(quantityField.getText());
 
+			if (quantity < 1)
+				throw new NumberFormatException();
+
 			StockItem newItem = new StockItem(barCode, name, description,
 					price, quantity);
 
