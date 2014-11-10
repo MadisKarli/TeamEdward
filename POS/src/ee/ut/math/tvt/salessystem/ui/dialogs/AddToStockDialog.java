@@ -17,10 +17,13 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 
+import org.hibernate.Transaction;
+
 import com.jgoodies.looks.windows.WindowsLookAndFeel;
 
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
+import ee.ut.math.tvt.salessystem.util.HibernateUtil;
 
 public class AddToStockDialog {
 	private SalesSystemModel model;
@@ -111,7 +114,22 @@ public class AddToStockDialog {
 					price, quantity);
 
 			model.getWarehouseTableModel().addItem(newItem);
+
+			Transaction tx = HibernateUtil.currentSession().beginTransaction();
+			HibernateUtil.currentSession().refresh(newItem);
+			StockItem item = (StockItem) HibernateUtil.currentSession().get(
+					newItem.getName(),
+					HibernateUtil.currentSession().getIdentifier(newItem));
+			if (item == null)
+				HibernateUtil.currentSession().save(newItem);
+			else {
+				newItem.setQuantity(newItem.getQuantity() + item.getQuantity());
+				HibernateUtil.currentSession().update(newItem);
+			}
+			tx.commit();
+
 			dialog.dispose();
+			// TODO et andmebaasi lisaks ka
 		} catch (NumberFormatException e) {
 			new ExceptionDialog("Invalid input!", "Try Again");
 		}

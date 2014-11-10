@@ -84,4 +84,8 @@ public class SalesSystemModel {
 		}
 	}
 
+	public SalesDomainController getDomainController() {
+		return domainController;
+	}
+
 }
