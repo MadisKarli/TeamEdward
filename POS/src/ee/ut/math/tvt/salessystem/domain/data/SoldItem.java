@@ -1,7 +1,5 @@
 package ee.ut.math.tvt.salessystem.domain.data;
 
-import javax.persistence.Entity;
-
 /**
  * Already bought StockItem. SoldItem duplicates name and price for preserving
  * history.
