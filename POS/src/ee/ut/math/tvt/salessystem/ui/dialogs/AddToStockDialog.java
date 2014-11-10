@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.NoSuchElementException;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -18,10 +19,13 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 
 import org.hibernate.Transaction;
+import org.hibernate.UnresolvableObjectException;
 
 import com.jgoodies.looks.windows.WindowsLookAndFeel;
 
+import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 import ee.ut.math.tvt.salessystem.util.HibernateUtil;
 
@@ -90,7 +94,12 @@ public class AddToStockDialog {
 		b.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				doneButtonClicked();
+				try {
+					doneButtonClicked();
+				} catch (VerificationFailedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		b.setEnabled(true);
@@ -98,40 +107,84 @@ public class AddToStockDialog {
 		return b;
 	}
 
-	protected void doneButtonClicked() {
-
+	protected void doneButtonClicked() throws VerificationFailedException {
+		// check wheteher this id is already in use or not
+		// price and qty can be changed
 		try {
 			Long barCode = Long.parseLong(barCodeField.getText());
-			String name = nameField.getText();
-			String description = descriptionField.getText();
-			double price = Double.parseDouble(priceField.getText());
-			int quantity = Integer.parseInt(quantityField.getText());
-
+			model.getWarehouseTableModel().getItemById(barCode);
+			double price;
+			int quantity;
+			// if they want new name, they have to use new id, this time we use
+			// old values
+			String name = model.getWarehouseTableModel().getItemById(barCode)
+					.getName();
+			String description = model.getWarehouseTableModel()
+					.getItemById(barCode).getDescription();
+			// price can be changed.
+			if (priceField.getText().equals("")) {
+				price = model.getWarehouseTableModel().getItemById(barCode)
+						.getPrice();
+				System.out.println("pricefield empty");
+			} else {
+				price = Double.parseDouble(priceField.getText());
+			}
+			// quantity can be changed
+			if (quantityField.getText().equals("")) {
+				quantity = model.getWarehouseTableModel().getItemById(barCode)
+						.getQuantity();
+			} else {
+				quantity = Integer.parseInt(quantityField.getText())
+						+ model.getWarehouseTableModel().getItemById(barCode)
+								.getQuantity();
+			}
 			if (quantity < 1)
 				throw new NumberFormatException();
 
 			StockItem newItem = new StockItem(barCode, name, description,
 					price, quantity);
 
-			model.getWarehouseTableModel().addItem(newItem);
-
-			Transaction tx = HibernateUtil.currentSession().beginTransaction();
-			HibernateUtil.currentSession().refresh(newItem);
-			StockItem item = (StockItem) HibernateUtil.currentSession().get(
-					newItem.getName(),
-					HibernateUtil.currentSession().getIdentifier(newItem));
-			if (item == null)
-				HibernateUtil.currentSession().save(newItem);
-			else {
-				newItem.setQuantity(newItem.getQuantity() + item.getQuantity());
-				HibernateUtil.currentSession().update(newItem);
-			}
+			SalesDomainControllerImpl.getSession().merge(newItem);
+			Transaction tx = SalesDomainControllerImpl.getSession()
+					.beginTransaction();
 			tx.commit();
-
+			model.getWarehouseTableModel().fireTableDataChanged();
 			dialog.dispose();
-			// TODO et andmebaasi lisaks ka
-		} catch (NumberFormatException e) {
-			new ExceptionDialog("Invalid input!", "Try Again");
+
+			// if barcode not in use
+		} catch (NoSuchElementException e) {
+			try {
+				Long barCode = Long.parseLong(barCodeField.getText());
+				String name = nameField.getText();
+				String description = descriptionField.getText();
+				double price = Double.parseDouble(priceField.getText());
+				int quantity = Integer.parseInt(quantityField.getText());
+
+				if (quantity < 1)
+					throw new NumberFormatException();
+
+				StockItem newItem = new StockItem(barCode, name, description,
+						price, quantity);
+
+				model.getWarehouseTableModel().addItem(newItem);
+
+				Transaction tx = HibernateUtil.currentSession().beginTransaction();
+				try{
+				HibernateUtil.currentSession().refresh(newItem);
+				} catch(UnresolvableObjectException e2){
+					HibernateUtil.currentSession().save(newItem);
+				}
+
+				tx.commit();
+				dialog.dispose();
+
+			} catch (NumberFormatException ex) {
+				new ExceptionDialog("Invalid number input!", "Try Again");
+			} 
+		}
+
+		catch (NumberFormatException e) {
+			new ExceptionDialog("Invalid number input!", "Try Again");
 		}
 
 	}

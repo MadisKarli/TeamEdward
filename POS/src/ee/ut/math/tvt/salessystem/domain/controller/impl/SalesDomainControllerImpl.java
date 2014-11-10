@@ -8,6 +8,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 
+import org.hibernate.Session;
+
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
@@ -17,6 +19,7 @@ import ee.ut.math.tvt.salessystem.util.HibernateUtil;
 /**
  * Implementation of the sales domain controller.
  */
+@SuppressWarnings("unchecked")
 public class SalesDomainControllerImpl implements SalesDomainController {
 
 	@Override
@@ -48,6 +51,10 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 	@Override
 	public void endSession() {
 		HibernateUtil.closeSession();
+	}
+	
+	public static Session getSession(){
+		return HibernateUtil.currentSession();
 	}
 
 }
