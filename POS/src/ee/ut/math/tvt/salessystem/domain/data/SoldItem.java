@@ -73,6 +73,26 @@ public class SoldItem implements Cloneable, DisplayableItem {
 		this.quantity = quantity;
 	}
 
+	public int getSale_id() {
+		return sale_id;
+	}
+
+	public void setSale_id(int sale_id) {
+		this.sale_id = sale_id;
+	}
+
+	public Timestamp getSaletime() {
+		return saletime;
+	}
+
+	public void setSaletime(Timestamp saletime) {
+		this.saletime = saletime;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
 	@Override
 	public Long getId() {
 		return id;
