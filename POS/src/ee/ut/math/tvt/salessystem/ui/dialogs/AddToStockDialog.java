@@ -125,7 +125,6 @@ public class AddToStockDialog {
 			if (priceField.getText().equals("")) {
 				price = model.getWarehouseTableModel().getItemById(barCode)
 						.getPrice();
-				System.out.println("pricefield empty");
 			} else {
 				price = Double.parseDouble(priceField.getText());
 			}
