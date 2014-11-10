@@ -8,7 +8,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
 
-/**
+/**s
  * Utility class that makes sure we has a single open hibernate session.
  */
 public class HibernateUtil {
