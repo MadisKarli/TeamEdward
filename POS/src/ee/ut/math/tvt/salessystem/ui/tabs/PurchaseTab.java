@@ -163,9 +163,9 @@ public class PurchaseTab {
 		try {
 			double purchaseSum = model.getCurrentPurchaseTableModel()
 					.getPurchaseSum();
-			new PaymentDialog(model);
 			log.debug("Contents of the current basket:\n"
 					+ model.getCurrentPurchaseTableModel());
+			new PaymentDialog(model);
 			domainController.submitCurrentPurchase(model
 					.getCurrentPurchaseTableModel().getTableRows());
 			if (model.getCurrentPurchaseTableModel().getPurchaseSum() != purchaseSum) {

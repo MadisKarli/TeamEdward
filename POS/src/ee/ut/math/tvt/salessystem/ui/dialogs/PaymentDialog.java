@@ -151,18 +151,19 @@ public class PaymentDialog {
 				purchaseInfoTableModel.populateWithData(model
 						.getCurrentPurchaseTableModel().getTableRows());
 				System.out.println("tabeli read");
-				System.out.println(model.getCurrentPurchaseTableModel().getTableRows());
+				System.out.println(model.getCurrentPurchaseTableModel()
+						.getTableRows());
 				model.getHistoryTableModel()
 						.addPurchase(purchaseInfoTableModel);
 
 				model.getCurrentPurchaseTableModel().clear();
-				
-				Transaction tx = SalesDomainControllerImpl.getSession().beginTransaction();
-		    	//SalesDomainControllerImpl.getSession().saveOrUpdate(purchaseInfoTableModel);
-		    	//System.out.println(purchaseInfoTableModel);
 
-		    	//tx.commit();
-				for(SoldItem item: purchaseInfoTableModel.getItems()){
+				Transaction tx = SalesDomainControllerImpl.getSession()
+						.beginTransaction();
+				// SalesDomainControllerImpl.getSession().saveOrUpdate(purchaseInfoTableModel);
+				// System.out.println(purchaseInfoTableModel);
+
+				for (SoldItem item : purchaseInfoTableModel.getItems()) {
 					System.out.println(item);
 					SalesDomainControllerImpl.getSession().saveOrUpdate(item);
 				}

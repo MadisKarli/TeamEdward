@@ -25,14 +25,18 @@ public class SoldItem implements Cloneable, DisplayableItem {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name = "STOCKITEM_ID")
+	//@ManyToOne(fetch=FetchType.EAGER)
+	//@JoinColumn(name = "STOCKITEM_ID")
+	//@Column(name = "STOCKITEM_ID", nullable = false)
 	private StockItem stockItem;
+	
+	@Column(name = "STOCKITEM_ID")
+	private int id2 = 23;
 
-	@Column(name = "sale_id", nullable = false)
+	@Column(name = "SALE_ID", nullable = false)
 	private int sale_id;
 	
-	@Column(name = "STOCKITEM_NAME", nullable = false, length = 50)
+	@Column(name = "NAME", nullable = false, length = 50)
 	private String name;
 	
 	@Column(name = "QUANTITY", nullable = false)
@@ -51,26 +55,6 @@ public class SoldItem implements Cloneable, DisplayableItem {
 		this.price = stockItem.getPrice();
 		this.quantity = quantity;
 
-	}
-
-	public int getSale_id() {
-		return sale_id;
-	}
-
-	public void setSale_id(int sale_id) {
-		this.sale_id = sale_id;
-	}
-
-	public Timestamp getSaletime() {
-		return saletime;
-	}
-
-	public void setSaletime(Timestamp saletime) {
-		this.saletime = saletime;
-	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
 	}
 
 	public int getSale_id() {
