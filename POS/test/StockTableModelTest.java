@@ -1,4 +1,4 @@
-package ee.ut.math.tvt.salessystem.ui.model;
+
 
 import org.junit.Before;
 import org.junit.Test;
