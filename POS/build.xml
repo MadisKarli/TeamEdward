@@ -22,6 +22,26 @@
 	<property name="db.url" value="jdbc:hsqldb:hsql://localhost/POS" />
 	<property name="lib.hibernate.dir" value="${lib.dir}/hibernate" />
 
+	<!-- test varoables -->
+	<property name="test.dir" value="${basedir}/test" />
+	<property name="build.test.dir" value="${build.dir}/test" />
+
+	<path id="libs">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+
+	<path id="test-classpath">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+		<pathelement path="${build.classes.dir}/" />
+		<pathelement path="${build.test.dir}/" />
+	</path>
+
+
 	<!-- Definitions of classpath variants used for different tasks -->
 	<path id="compile.classpath">
 		<fileset dir="${lib.dir}">
@@ -74,10 +94,31 @@
 	<target name="build" depends="clean" description="Build the system">
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${build.classes.dir}" />
+		<mkdir dir="${build.test.dir}" />
 		<javac srcdir="${src.dir}" destdir="${build.classes.dir}" debug="true" debuglevel="lines,vars,source" encoding="utf-8" compiler="modern" target="1.8" source="1.8" includeantruntime="false">
 			<classpath refid="compile.classpath" />
 		</javac>
 	</target>
+
+	<target name="build-tests" depends="build" description="Build tests">
+		<javac srcdir="${test.dir}" destdir="${build.test.dir}" debug="true" debuglevel="lines,vars,source" encoding="utf-8" compiler="modern" target="1.8" source="1.8" classpathref="libs">
+			<classpath>
+				<pathelement path="${build.classes.dir}" />
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="test" depends="build-tests" description="Run tests">
+		<junit>
+			<classpath refid="test-classpath" />
+			<formatter type="brief" usefile="false" />
+			<batchtest>
+				<fileset dir="${build.test.dir}" includes="**/*.class" />
+			</batchtest>
+		</junit>
+	</target>
+
+
 
 
 	<target name="dist" depends="build" description="Createse in the folder build/jar a spearate JAR file that has all classes, property files and other components required for running Intro window.">

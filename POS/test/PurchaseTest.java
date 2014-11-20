@@ -1,5 +1,8 @@
 package ee.ut.math.tvt.salessystem.domain.data;
 
+import org.junit.Before;
+import org.junit.Test;
+
 public class PurchaseTest {
 	@Before
 	public void setUp() {
@@ -8,7 +11,7 @@ public class PurchaseTest {
 
 	// TODO
 	@Test
-	public void testAddSoldItem()() {
+	public void testAddSoldItem() {
 	}
 
 	// TODO
