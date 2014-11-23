@@ -10,23 +10,23 @@ import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 
 public class SoldItemTest {
 	
-	private StockItem item1;
+	private StockItem item;
 	
 	@Before
 	public void setUp() {
-		item1 = new StockItem((long)100,"Jogurt"," ",5,59);
+		item = new StockItem((long)100,"Jogurt"," ",5,59);
 	}
 
 	
 	@Test
 	public void testGetSum() {
-		SoldItem r = new SoldItem(item1, 10);
-	    assertEquals(r.getSum(), 50, 0.0001);
+		SoldItem sold = new SoldItem(item, 10);
+	    assertEquals(sold.getSum(), 50, 0.0001);
 	}
 
 	@Test
 	public void testGetSumWithZeroQuantity() {
-		SoldItem r = new SoldItem(item1, 0);
-	    assertEquals(r.getSum(), 0, 0.0001);
+		SoldItem sold = new SoldItem(item, 0);
+	    assertEquals(sold.getSum(), 0, 0.0001);
 	}
 }
