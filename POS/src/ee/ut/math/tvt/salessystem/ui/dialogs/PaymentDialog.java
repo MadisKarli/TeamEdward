@@ -29,7 +29,6 @@ import org.hibernate.Transaction;
 import com.jgoodies.looks.windows.WindowsLookAndFeel;
 
 import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
-import ee.ut.math.tvt.salessystem.domain.data.Purchase;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.ui.model.PurchaseInfoTableModel;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;

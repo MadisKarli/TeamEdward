@@ -1,9 +1,6 @@
 package ee.ut.math.tvt.salessystem.ui.model;
 
-import java.util.ArrayList;
-
 import ee.ut.math.tvt.salessystem.domain.data.Purchase;
-import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 
 public class HistoryTableModel extends SalesSystemTableModel<Purchase> {
 

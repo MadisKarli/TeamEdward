@@ -19,7 +19,6 @@ public class StockItemTest {
 	public void testClone() {
 		
 		StockItem item2 = (StockItem)item.clone();
-			
 		assertEquals(item2.getId(), item.getId(), 0.0001);
 		assertEquals(item2.getName(), (String)item.getName());
 		assertEquals(item2.getPrice(), item.getPrice(), 0.0001);
