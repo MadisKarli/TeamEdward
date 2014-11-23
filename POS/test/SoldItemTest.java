@@ -1,6 +1,7 @@
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -28,5 +29,11 @@ public class SoldItemTest {
 	public void testGetSumWithZeroQuantity() {
 		SoldItem sold = new SoldItem(item, 0);
 	    assertEquals(sold.getSum(), 0, 0.0001);
+	}
+	
+	@Test
+	public void testGetStockItem(){
+		SoldItem sold = new SoldItem(item, 10);
+		assertSame(sold.getStockItem(),item);
 	}
 }
