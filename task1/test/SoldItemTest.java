@@ -31,6 +31,6 @@ public class SoldItemTest {
 	@Test
 	public void testGetStockItem() {
 		SoldItem sold = new SoldItem(item, 10);
-		assertSame(sold.getStockItem(), 0);
+		assertSame(sold.getStockItem(), item);
 	}
 }
