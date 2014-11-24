@@ -17,9 +17,9 @@ public class StockTableModelTest {
 	private StockItem stock2;
 	private StockItem stock3;
 	private StockItem stock4;
-	long i = (long) 1;
-	long j = (long) 2;
-	long k = (long) 3;
+	long i = (long)1;
+	long j = (long)2;
+	long k = (long)3;
 
 	@Before
 	public void setUp() throws VerificationFailedException {
@@ -39,13 +39,11 @@ public class StockTableModelTest {
 
 	@Test
 	public void testHasEnoughInStock() throws VerificationFailedException {
-		// since we don't have max or min values we cannot implement it
-		// correctly
-		// testing with 0 qty and 5 qty and checking wheter they are bigger than
-		// 0 or not
+		//since we don't have max or min values we cannot implement it correctly
+		//testing with 0 qty and 5 qty and checking wheter they are bigger than 0 or not
 		test1.addItem(stock3);
-		assertTrue(test1.getItemById(i).getQuantity() > 0);
-		assertFalse(test1.getItemById(k).getQuantity() > 0);
+		assertTrue(test1.getItemById(i).getQuantity() >0);
+		assertFalse(test1.getItemById(k).getQuantity()>0);
 	}
 
 	@Test
