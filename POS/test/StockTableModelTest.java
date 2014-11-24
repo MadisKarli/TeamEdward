@@ -1,4 +1,6 @@
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.NoSuchElementException;
 
@@ -14,8 +16,9 @@ public class StockTableModelTest {
 	private StockItem stock1;
 	private StockItem stock2;
 	private StockItem stock3;
-	long i = 12345678910L;
-	long j = 12314L;
+	long i = 1;
+	long j = 2;
+	long k = 3;
 
 	@Before
 	public void setUp() throws VerificationFailedException {
@@ -34,10 +37,10 @@ public class StockTableModelTest {
 
 	@Test
 	public void testHasEnoughInStock() throws VerificationFailedException {
-		// not sure what is expected here, just adding item and cheking stock
-		stock3 = new StockItem(j, "stock3", "", 14, 10);
+
 		test1.addItem(stock3);
-		assertEquals(test1.getItemById(j).getQuantity(), 10, 0.001);
+		assertTrue(test1.getItemById(i).getQuantity() > 0);
+		assertFalse(test1.getItemById(k).getQuantity() > 0);
 	}
 
 	@Test
@@ -48,7 +51,6 @@ public class StockTableModelTest {
 
 	@Test(expected = NoSuchElementException.class)
 	public void testGetItemByIdWhenThrowsException() {
-		stock3 = test1.getItemById(1);
 
 	}
 }
