@@ -59,7 +59,7 @@ public class HistoryTableModelTest {
 		history.addPurchase(purchaseInfo1);
 		assertSame((history.getItems().get(0)).getPurchase(), purchaseInfo1);
 
-	}
+	} 
 	
 
 	@Test//adding to history with multiple purchases purchase with multiple items
