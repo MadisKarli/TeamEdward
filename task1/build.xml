@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." name="POS.makejar" default="build">
+
+	<!-- Definitions of variables used during the rest of this script -->
+
+	<property file="build.properties" />
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="build.classes.dir" value="${build.dir}/classes" />
+	<property name="src.dir" value="${basedir}/src" />
+	<property name="dist.dir" value="${basedir}/dist" />
+	<property name="conf.dir" value="${basedir}/etc" />
+	<property name="doc.dir" value="${build.dir}/doc" />
+	<property name="lib.dir" value="${basedir}/lib" />
+	<property name="test.reports.dir" value="${build.dir}/reports" />
+	<property name="main-class" value="ee.ut.math.tvt.teamedward.Intro" />
+	<property name="team-name" value="teamedward" />
+
+	<!-- database variables -->
+	<property name="data.dir" value="${basedir}/data" />
+	<property name="db.file" value="${data.dir}/POSdb" />
+	<property name="db.alias" value="POS" />
+	<property name="db.url" value="jdbc:hsqldb:hsql://localhost/POS" />
+	<property name="lib.hibernate.dir" value="${lib.dir}/hibernate" />
+
+	<!-- test varoables -->
+	<property name="test.dir" value="${basedir}/test" />
+	<property name="build.test.dir" value="${build.dir}/test" />
+
+	<path id="libs">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+
+	<path id="test-classpath">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+		<pathelement path="${build.classes.dir}/" />
+		<pathelement path="${build.test.dir}/" />
+	</path>
+
+
+	<!-- Definitions of classpath variants used for different tasks -->
+	<path id="compile.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${lib.hibernate.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+
+	<path id="run.classpath">
+		<pathelement location="${build.classes.dir}" />
+		<!-- configuration -->
+		<pathelement location="${conf.dir}" />
+		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+			<exclude name="log4j-1.2.17.jar" />
+		</fileset>
+
+		<fileset dir="${lib.hibernate.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<!-- Definitions of runnable ant targets.
+         Run them from the command line by executing "ant [targetname]"  -->
+
+	<target name="run" depends="build" description="Run application in eclipse">
+		<java fork="yes" classname="${main-class}">
+			<!--<jvmarg value="-Xdebug" />
+			<jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=1044" />-->
+			<classpath>
+				<pathelement path="${build.dir}/classes" />
+				<!-- All librarys manually -->
+				<pathelement location="lib/log4j-1.2.17.jar" />
+				<pathelement location="lib/commons-codec-1.9.jar" />
+				<pathelement location="lib/commons-configuration-1.10.jar" />
+				<pathelement location="lib/commons-lang-2.6.jar" />
+				<pathelement location="lib/commons-logging-1.2.jar" />
+				<pathelement location="lib/jgoodies-common-1.8.0.jar" />
+				<pathelement location="lib/jgoodies-looks-2.6.0.jar" />
+			</classpath>
+
+
+		</java>
+	</target>
+
+
+	<target name="build" depends="clean" description="Build the system">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.classes.dir}" />
+		<mkdir dir="${build.test.dir}" />
+		<javac srcdir="${src.dir}" destdir="${build.classes.dir}" debug="true" debuglevel="lines,vars,source" encoding="utf-8" compiler="modern" target="1.8" source="1.8" includeantruntime="false">
+			<classpath refid="compile.classpath" />
+		</javac>
+	</target>
+
+	<target name="build-tests" depends="build" description="Build tests">
+		<javac srcdir="${test.dir}" destdir="${build.test.dir}" debug="true" debuglevel="lines,vars,source" encoding="utf-8" compiler="modern" target="1.8" source="1.8" classpathref="libs">
+			<classpath>
+				<pathelement path="${build.classes.dir}" />
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="test" depends="build-tests" description="Run tests">
+		<junit>
+			<classpath refid="test-classpath" />
+			<formatter type="brief" usefile="false" />
+			<batchtest>
+				<fileset dir="${build.test.dir}" includes="**/*.class" />
+			</batchtest>
+		</junit>
+	</target>
+
+
+
+
+	<target name="dist" depends="build" description="Createse in the folder build/jar a spearate JAR file that has all classes, property files and other components required for running Intro window.">
+
+		<mkdir dir="build/jar/" />
+		<jar destfile="build/jar/${team-name}.jar" basedir="${build.classes.dir}">
+			<fileset dir="${build.classes.dir}" />
+			<fileset dir="${basedir}">
+				<include name="application.properties" />
+				<include name="version.properties" />
+			</fileset>
+			<archives>
+
+				<zips>
+					<fileset dir="lib/" includes="*.jar" />
+				</zips>
+
+			</archives>
+
+			<manifest>
+				<attribute name="Main-Class" value="${main-class}" />
+			</manifest>
+		</jar>
+		<propertyfile file="version.properties" comment="Version properties">
+			<entry key="build.revision.number" default="0" type="int" operation="+" />
+		</propertyfile>
+	</target>
+
+
+
+
+
+	<!--Target to run .jar file -->
+	<target name="jrun" depends="dist" description="Run teamedward.jar.">
+		<java fork="yes" jar="build/jar/${team-name}.jar" />
+	</target>
+
+
+	<!-- Build internal documentation -->
+	<target name="javadoc" description="Build internal documentation">
+		<mkdir dir="${doc.dir}" />
+		<javadoc destdir="${doc.dir}" classpathref="compile.classpath">
+			<fileset dir="${src.dir}" includes="**/*.java" />
+		</javadoc>
+	</target>
+
+	<!-- git macro -->
+	<macrodef name="git">
+		<attribute name="command" />
+		<attribute name="dir" default="" />
+		<element name="args" optional="true" />
+		<sequential>
+			<echo message="git @{command}" />
+			<exec executable="git" dir="@{dir}">
+				<arg value="@{command}" />
+				<args />
+			</exec>
+		</sequential>
+	</macrodef>
+
+
+	<!-- commit to git -->
+	<target name="git_commit" description="Commit+push changes to GitHub">
+		<input message="Insert comment" addproperty="message" />
+		<input message="Github username" addproperty="username" />
+		<input message="Github password" addproperty="password" />
+
+		<git command="add">
+			<args>
+				<arg value="-A" />
+			</args>
+		</git>
+
+		<git command="commit">
+			<args>
+				<arg value="-m ${message}" />
+			</args>
+		</git>
+
+		<git command="push">
+			<args>
+				<arg value="https://${username}:${password}@github.com/MadisKarli/TeamEdward.git" />
+			</args>
+		</git>
+	</target>
+
+
+	<!--push with tag -->
+	<target name="git_tag" description="Push with tag">
+		<input message="Insert homework number" addproperty="homework_number" />
+		<input message="Commit comment" addproperty="tag_comment" />
+		<input message="Github username" addproperty="username" />
+		<input message="Github password" addproperty="password" />
+
+		<git command="tag">
+			<args>
+				<arg value="-a" />
+				<arg value="Homework_${homework_number}" />
+				<arg value="-m ${tag_comment}" />
+			</args>
+		</git>
+
+		<git command="push">
+			<args>
+				<arg value="--tags" />
+				<arg value="https://${username}:${password}@github.com/MadisKarli/TeamEdward.git" />
+			</args>
+		</git>
+
+	</target>
+
+
+	<!-- Clean up! -->
+	<target name="clean" description="Clean up build system results">
+		<delete dir="${build.dir}" />
+	</target>
+
+
+	<property file="version.properties" />
+	<target name="info">
+		<echo> ${build} </echo>
+	</target>
+
+	<target name="dbmanager" description="Start the HSQLDB manager">
+		<java classname="org.hsqldb.util.DatabaseManagerSwing" classpathref="run.classpath" fork="yes">
+			<arg line="--user sa --url ${db.url}" />
+		</java>
+	</target>
+
+	<target name="startdb" description="Start the HSQLDB with the default params">
+		<java classname="org.hsqldb.Server" classpathref="run.classpath" fork="yes">
+			<arg line="-database.0 '${db.file}' -dbname.0 '${db.alias}'" />
+		</java>
+	</target>
+
+</project>
+
