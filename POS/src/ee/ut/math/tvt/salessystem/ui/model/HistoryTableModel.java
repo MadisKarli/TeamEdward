@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ee.ut.math.tvt.salessystem.domain.data.Purchase;
-import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 
 public class HistoryTableModel extends SalesSystemTableModel<Purchase> {
 

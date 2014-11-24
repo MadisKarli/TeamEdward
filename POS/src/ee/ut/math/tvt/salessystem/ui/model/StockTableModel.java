@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 import org.apache.log4j.Logger;
 
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 
 /**
  * Stock item table model.
@@ -38,18 +39,29 @@ public class StockTableModel extends SalesSystemTableModel<StockItem> {
 	 * id, then existing item's quantity will be increased.
 	 * 
 	 * @param stockItem
+	 * @throws VerificationFailedException 
 	 */
-	public void addItem(final StockItem stockItem) {
+	public void addItem(final StockItem stockItem) throws VerificationFailedException {
 		try {
 			StockItem item = getItemById(stockItem.getId());
 			item.setQuantity(item.getQuantity() + stockItem.getQuantity());
 			log.debug("Found existing item " + stockItem.getName()
 					+ " increased quantity by " + stockItem.getQuantity());
 		} catch (NoSuchElementException e) {
+			//try{
+			for (String name : this.getStockItemNames()) {
+				if (stockItem.getName().equals(name)) {
+					throw new VerificationFailedException("Name already in use");
+				}
+			}
 			rows.add(stockItem);
 			log.debug("Added " + stockItem.getName() + " quantity of "
 					+ stockItem.getQuantity());
+			//}catch(VerificationFailedException e2){
+				//new ExceptionDialog("Name already in use", "Try Again");
+			//}
 		}
+
 		fireTableDataChanged();
 	}
 

@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 
-
 import ee.ut.math.tvt.salessystem.ui.model.PurchaseInfoTableModel;
 
 public class Purchase implements Cloneable, DisplayableItem {

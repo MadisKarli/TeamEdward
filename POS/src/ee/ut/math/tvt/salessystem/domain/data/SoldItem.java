@@ -3,18 +3,16 @@ package ee.ut.math.tvt.salessystem.domain.data;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 /**
  * Already bought StockItem. SoldItem duplicates name and price for preserving
  * history.
  */
-@Entity
-@Table(name = "SOLDITEM")
+//@Entity
+//@Table(name = "SOLDITEM")
 public class SoldItem implements Cloneable, DisplayableItem {
 
 	@Id

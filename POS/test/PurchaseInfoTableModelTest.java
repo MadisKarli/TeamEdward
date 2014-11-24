@@ -1,4 +1,3 @@
-
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertEquals;
 
@@ -63,5 +62,4 @@ public class PurchaseInfoTableModelTest {
 		purchase.addItem(solditem3);
 		assertEquals(purchase.getPurchaseSum(), (11 + 15 + 28), 0.001);
 	}
-	
 }
