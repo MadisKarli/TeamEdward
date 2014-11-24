@@ -43,6 +43,7 @@ public class PurchaseInfoTableModelTest {
 
 	@Test
 	public void testGetSumWithNoItems() {
+		//purchase without solditems
 		PurchaseInfoTableModel purchase = new PurchaseInfoTableModel();
 		assertEquals(purchase.getPurchaseSum(), 0, 0.001);
 	}

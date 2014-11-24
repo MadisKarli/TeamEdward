@@ -37,8 +37,8 @@ public class HistoryTableModelTest {
 				40);
 	}
 
-	@Test
-	public void testAddPurchaseOneItem() {
+	@Test//adding to history with one purchase with one item
+	public void testAddOnePurchaseOneItem() {
 		solditem1 = new SoldItem(stockitem1, 2);
 		purchaseInfo1.addItem(solditem1);
 		history.addPurchase(purchaseInfo1);
@@ -46,9 +46,24 @@ public class HistoryTableModelTest {
 		assertSame((history.getItems().get(0)).getPurchase(), purchaseInfo1);
 
 	}
+	
+	@Test//adding to history with one purchase with multiple items
+	public void testAddOnePurchaseMultipleItem() {
+		solditem1 = new SoldItem(stockitem1, 2);
+		solditem2 = new SoldItem(stockitem2, 3);
+		solditem3 = new SoldItem(stockitem3, 4);
 
-	@Test
-	public void testAddPurchaseMultipleItem() {
+		purchaseInfo1.addItem(solditem1);
+		purchaseInfo1.addItem(solditem2);
+		purchaseInfo1.addItem(solditem3);
+		history.addPurchase(purchaseInfo1);
+		assertSame((history.getItems().get(0)).getPurchase(), purchaseInfo1);
+
+	}
+	
+
+	@Test//adding to history with multiple purchases purchase with multiple items
+	public void testAddMultPurchaseMultipleItem() {
 		solditem1 = new SoldItem(stockitem1, 2);
 		solditem2 = new SoldItem(stockitem2, 3);
 		solditem3 = new SoldItem(stockitem3, 4);
