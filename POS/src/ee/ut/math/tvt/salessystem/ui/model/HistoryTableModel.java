@@ -1,9 +1,9 @@
 package ee.ut.math.tvt.salessystem.ui.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import ee.ut.math.tvt.salessystem.domain.data.Purchase;
-import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 
 public class HistoryTableModel extends SalesSystemTableModel<Purchase> {
 
@@ -34,4 +34,11 @@ public class HistoryTableModel extends SalesSystemTableModel<Purchase> {
 		fireTableDataChanged();
 	}
 
+	public	List<Purchase> getItems(){
+		List<Purchase> tagastus = new ArrayList<Purchase>();
+		for(final Purchase item: rows){
+			tagastus.add(item);
+		}
+		return tagastus;
+	}
 }

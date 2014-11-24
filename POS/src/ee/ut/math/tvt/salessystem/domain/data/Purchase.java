@@ -3,7 +3,6 @@ package ee.ut.math.tvt.salessystem.domain.data;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.util.List;
 
 import ee.ut.math.tvt.salessystem.ui.model.PurchaseInfoTableModel;
 

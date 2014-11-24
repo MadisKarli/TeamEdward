@@ -24,8 +24,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.hibernate.Transaction;
+
 import com.jgoodies.looks.windows.WindowsLookAndFeel;
 
+import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
+import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.ui.model.PurchaseInfoTableModel;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 
@@ -145,16 +149,29 @@ public class PaymentDialog {
 				PurchaseInfoTableModel purchaseInfoTableModel = new PurchaseInfoTableModel();
 				purchaseInfoTableModel.populateWithData(model
 						.getCurrentPurchaseTableModel().getTableRows());
-
+				System.out.println("tabeli read");
+				System.out.println(model.getCurrentPurchaseTableModel()
+						.getTableRows());
 				model.getHistoryTableModel()
 						.addPurchase(purchaseInfoTableModel);
 
 				model.getCurrentPurchaseTableModel().clear();
+
+				Transaction tx = SalesDomainControllerImpl.getSession()
+						.beginTransaction();
+				// SalesDomainControllerImpl.getSession().saveOrUpdate(purchaseInfoTableModel);
+				// System.out.println(purchaseInfoTableModel);
+
+				for (SoldItem item : purchaseInfoTableModel.getItems()) {
+					System.out.println(item);
+					SalesDomainControllerImpl.getSession().saveOrUpdate(item);
+				}
+				tx.commit();
 				dialog.dispose();
 			} else
-				new ExceptionDialog("Moar moneys, plz!", "Ok");
+				new ExceptionDialog("Not enough money", "Ok");
 		} catch (NumberFormatException e) {
-			new ExceptionDialog("Moar moneys, plz!", "Ok");
+			new ExceptionDialog("Not enough money", "Ok");
 		}
 	}
 
