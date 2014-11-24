@@ -58,7 +58,7 @@ public class HistoryTableModelTest {
 		purchaseInfo1.addItem(solditem3);
 		history.addPurchase(purchaseInfo1);
 		assertSame((history.getItems().get(0)).getPurchase(), purchaseInfo1);
- 
+
 	} 
 	
 
